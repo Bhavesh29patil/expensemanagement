@@ -1,0 +1,25 @@
+*{
+padding :0;
+margin:0;
+box-sizing: 0;
+}
+
+.content{
+    height: 80vh;
+}
+
+.navbar{
+    background-color: gold !important;
+}
+
+.register-page {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    background: #c31432;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #240b36, #c31432);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #240b36, #c31432); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
