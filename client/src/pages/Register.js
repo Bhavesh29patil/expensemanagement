@@ -11,11 +11,14 @@ const Register = () => {
     //form submit
     const submitHandler = async(values) => {
         try {
+            console.log("hi")
             setLoading(true);
-            await axios.post('/users/register',values)
+            console.log(values)
+             await axios.post('/users/register',values)
+            console.log(values)
             message.success('Registration Sucessfull')
             setLoading(false);  
-            navigate('/');   
+            navigate('/Login');   
 
         } catch (error) {
             setLoading(false);
@@ -26,7 +29,7 @@ const Register = () => {
   return (
     <>
      <div className='register-page'>
-     {loading && <Spinner />}
+     
         <Form layout="vertical" onFinish={submitHandler}>
         <h1>REGISTER FORM</h1>
         <Form.Item label="Name" name="name">
