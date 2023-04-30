@@ -1,10 +1,8 @@
 <html>
 
     <head>
-        <title>
-            
+        <title>  
             <%= tittle %>
-
         </title>
         
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -12,13 +10,12 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
          <!-- font awesome link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-    <link rel="stylesheet" href="./style.css"
+    <link rel="stylesheet" href="style.css"
     </head>
    <script src=" https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <body>
 <section class="container">
         <h1 align="center">TODO APP</h1>
-
             <!-- form to create task -->
         <form action="/create-task" method="POST">
 
@@ -26,9 +23,9 @@
                 <thead>
                   <tr class="table-active">
                     <th >Add Task</th>
-                    <th >category</th>
-                    <th >date</th>
-                    <th ></th>
+                    <th >Category</th>
+                    <th >Date</th>
+                    <th >Add Here</th>
                   </tr>
                 </thead>
             
@@ -46,25 +43,28 @@
 
                     </select></th>
                       <td > <input type="date" name="date" required></th>
-                      <td ><input type="submit"  class="button:nth-of-type(1)"id="add" value="ADD TASK"></th>
+                      <td ><input type="submit"  class="n1"id="add" value="ADD TASK"></th>
                     </tr>
                 </tbody>
             
             </table>
-                  
+          </div>         
   </form>
     </section>
-        <div>          
-                <h1 align="center">TASKS LIST</h1>
 
+
+
+
+          <section class ="container1">
+            <h1 align="center">TASKS LIST</h1>
                 <form action="/delete-task" method="GET">
-                    <table class = "container">
+                    <table class = "table">
                         <thead>
-                            <tr>
-                              <th>Select</th>
+                            <tr class="table-active">
+                              <th >Select</th>
                               <th>Task</th>
                               <th>Category</th>
-                            <th>due date</th>
+                            <th>Due Date</th>
                             </tr>
                           </thead>
                         <% for(let i of task) { %>
@@ -86,8 +86,9 @@
 
                            
 </table>
+</section>
 <div  align = "center"><input type="submit" class="
-  nth-of-type(2)" value="DELETE TASK">
+  n1" value="DELETE TASK">
                 </div>></form>
 
         
