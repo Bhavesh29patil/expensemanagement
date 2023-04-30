@@ -4,7 +4,13 @@ import { Modal, Form, Select, Input, message, Table, DatePicker } from "antd";
 import Layout from "../components/Layout";
 import axios from "axios";
 import Spinner from "../components/Spinner";
-import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
+import {
+  UnorderedListOutlined,
+  AreaChartOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import Analytics from "./Analytics";
 const { RangePicker } = DatePicker;
 
 const HomePage = () => {
@@ -15,6 +21,7 @@ const HomePage = () => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [type, setType] = useState("all");
   const [viewData, setViewData] = useState("table");
+  const [editable, setEditable] = useState(null);
   //table data
   const columns = [
     {
@@ -40,6 +47,17 @@ const HomePage = () => {
     },
     {
       title: "Actions",
+      render: (text, record) => (
+        <div>
+          <EditOutlined
+            onClick={() => {
+              setEditable(record);
+              setShowModal(true);
+            }}
+          />
+          <DeleteOutlined className="mx-2" onClick={() => {handleDelete(record)}}/>
+        </div>
+      ),
     },
   ];
 
@@ -70,19 +88,55 @@ const HomePage = () => {
     getALLTransaction();
   }, [frequency, selectedDates, type]);
 
+
+  const handleDelete = async(record) => {
+try {
+  setLoading(true);
+  axios.post("/transection/delete-transection", {transactionID:record._id})
+  setLoading(false);
+  message.success("transaction deleted");
+  
+} catch (error) {
+  console.log(error);
+        setLoading(false);
+
+        message.error("unable to delete");
+}
+  };
+
+
+
   const handleSubmit = async (values) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
       console.log(user.user._id);
+      if(editable){
+        
+      await axios.post("/transection/edit-transection", {
+        payload:{
+          ...values,
+          userId:user.user._id
+        },
+        transactionID:editable._id
+      });
+      console.log(values);
 
+      setLoading(false);
+      message.success("Transection updated Successfully");
+
+      }else{
+        
       await axios.post("/transection/add-transection", {
         userid: user.user._id,
         ...values,
       });
       setLoading(false);
       message.success("Transection Added Successfully");
+      }
+
       setShowModal(false);
+      setEditable(null);
     } catch (error) {
       setLoading(false);
       message.error("failed to add transection");
@@ -124,11 +178,15 @@ const HomePage = () => {
         </div>
         <div className="switch-icons">
           <UnorderedListOutlined
-            className={`mx-2 ${viewData === 'table' ? 'active-icons' : 'inactive-icons'}`}
+            className={`mx-2 ${
+              viewData === "table" ? "active-icons" : "inactive-icons"
+            }`}
             onClick={() => setViewData("table")}
           />
           <AreaChartOutlined
-             className={`mx-2 ${viewData === 'analytics' ? 'active-icons' : 'inactive-icons'}`}
+            className={`mx-2 ${
+              viewData === "analytics" ? "active-icons" : "inactive-icons"
+            }`}
             onClick={() => setViewData("analytics")}
           />
         </div>
@@ -142,15 +200,23 @@ const HomePage = () => {
         </div>
       </div>
       <div className="content">
-        <Table columns={columns} dataSource={allTransection} />
+        {viewData === "table" ? (
+          <Table columns={columns} dataSource={allTransection} />
+        ) : (
+          <Analytics allTransection={allTransection} />
+        )}
       </div>
       <Modal
-        title="Add transection"
+        title={editable ? "Edit transaction" : "add transaction"}
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
       >
-        <Form layout="vertical" onFinish={handleSubmit}>
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={editable}
+        >
           <Form.Item label="Amount" name="amount">
             <input type="text" />
           </Form.Item>

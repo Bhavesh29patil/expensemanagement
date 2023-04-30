@@ -25,6 +25,34 @@ const getALLTransection = async (req, res) => {
   }
 };
 
+const editTransection = async(req,res) => {
+
+  try {
+    await transectionModel.findOneAndUpdate(
+      {_id: req.body.transactionID},
+      req.body.payload
+
+    );
+    res.status(200).send("edit sucessfully");
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error);
+  }
+
+}
+
+const deleteTransection = async(req,res ) => {
+try {
+  await transectionModel.findOneAndDelete({_id:req.body.transactionID})
+  res.status(200).send("Transection deleted");
+} catch (error) {
+  console.log(error);
+  console.log("hello")
+  res.status(500).json(error);
+  
+}
+}
+
 const addTransection = async (req, res) => {
   try {
     const newTransection = new transectionModel(req.body);
@@ -37,4 +65,4 @@ const addTransection = async (req, res) => {
   }
 };
 
-module.exports = { getALLTransection, addTransection };
+module.exports = { getALLTransection, addTransection ,editTransection,deleteTransection};
