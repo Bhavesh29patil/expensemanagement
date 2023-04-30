@@ -18,15 +18,12 @@ const transectionSchema = new mongoose.Schema(
       type: String,
       required: [true, "Category is required, cannot be kept empty"],
     },
-    category: {
-      type: String,
-    },
     description: {
       type: String,
       required: [true, "description is required"],
     },
     date: {
-      type: String,
+      type: Date,
       required: [true, "data is required"],
     },
   },
