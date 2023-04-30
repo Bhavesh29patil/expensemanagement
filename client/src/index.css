@@ -32,3 +32,22 @@ background: linear-gradient(to right, #240b36, #c31432); /* W3C, IE 10+/ Edge, F
     padding: 15px 20px;
     box-shadow: 0 0 15px gray;
 }
+
+.switch-icons{
+    border: 1px solid rgba(0 , 0, 0, 0.677);
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+
+/*antd icons*/
+.anticon svg{
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.active-icons{
+    color: black;
+}
+.inactive-icons{
+    color: crimson;
+}

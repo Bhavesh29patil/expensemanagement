@@ -1,30 +1,30 @@
+import moment from "moment";
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Select, Input, message, Table ,DatePicker} from "antd";
+import { Modal, Form, Select, Input, message, Table, DatePicker } from "antd";
 import Layout from "../components/Layout";
 import axios from "axios";
 import Spinner from "../components/Spinner";
-const {RangePicker}= DatePicker;
+import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
+const { RangePicker } = DatePicker;
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTransection, setAllTransection] = useState([]);
   const [frequency, setFrequency] = useState("7");
-  const [selectedDates,setselectedDates] = useState([])
-
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [type, setType] = useState("all");
+  const [viewData, setViewData] = useState("table");
   //table data
   const columns = [
     {
       title: "Date",
       dataIndex: "date",
+      render: (text) => <span>{moment(text).format("DD-MM-YYYY")}</span>,
     },
     {
       title: "Amount",
       dataIndex: "amount",
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
     },
     {
       title: "Type",
@@ -32,11 +32,11 @@ const HomePage = () => {
     },
     {
       title: "Category",
-      dataIndex: "date",
+      dataIndex: "category",
     },
     {
-      title: "Reference",
-      dataIndex: "reference",
+      title: "Description",
+      dataIndex: "description",
     },
     {
       title: "Actions",
@@ -49,11 +49,13 @@ const HomePage = () => {
     const getALLTransaction = async () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
+
         setLoading(true);
         const res = await axios.post("/transection/get-transection", {
-          userid: user._id,
+          userid: user.user._id,
           frequency,
           selectedDates,
+          type,
         });
         setLoading(false);
         setAllTransection(res.data);
@@ -66,15 +68,17 @@ const HomePage = () => {
       }
     };
     getALLTransaction();
-  }, [frequency,selectedDates]);
+  }, [frequency, selectedDates, type]);
 
   const handleSubmit = async (values) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
+      console.log(user.user._id);
+
       await axios.post("/transection/add-transection", {
+        userid: user.user._id,
         ...values,
-        userid: user._id,
       });
       setLoading(false);
       message.success("Transection Added Successfully");
@@ -97,7 +101,36 @@ const HomePage = () => {
             <Select.Option value="365">Last 1 year</Select.Option>
             <Select.Option value="custom">custom</Select.Option>
           </Select>
-          {frequency === 'custom '&& <RangePicker value={selectedDates} onChange={(values)=>setselectedDates(values)}/>}
+          {frequency === "custom " && (
+            <RangePicker
+              value={selectedDates}
+              onChange={(values) => setSelectedDates(values)}
+            />
+          )}
+        </div>
+        <div>
+          <h6>Select Type</h6>
+          <Select value={type} onChange={(values) => setType(values)}>
+            <Select.Option value="all">all</Select.Option>
+            <Select.Option value="income">income</Select.Option>
+            <Select.Option value="expense">expense</Select.Option>
+          </Select>
+          {frequency === "custom " && (
+            <RangePicker
+              value={selectedDates}
+              onChange={(values) => setSelectedDates(values)}
+            />
+          )}
+        </div>
+        <div className="switch-icons">
+          <UnorderedListOutlined
+            className={`mx-2 ${viewData === 'table' ? 'active-icons' : 'inactive-icons'}`}
+            onClick={() => setViewData("table")}
+          />
+          <AreaChartOutlined
+             className={`mx-2 ${viewData === 'analytics' ? 'active-icons' : 'inactive-icons'}`}
+            onClick={() => setViewData("analytics")}
+          />
         </div>
         <div>
           <button
@@ -144,9 +177,6 @@ const HomePage = () => {
           </Form.Item>
           <Form.Item label="Date" name="date">
             <Input type="date" />
-          </Form.Item>
-          <Form.Item label="Reference" name="reference">
-            <Input type="text" />
           </Form.Item>
           <Form.Item label="description" name="description">
             <Input type="text" />
