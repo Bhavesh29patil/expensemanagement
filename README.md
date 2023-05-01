@@ -36,12 +36,12 @@ npm run dev
 
 - Perform CRUD operations on transactions categorized into Income/Expenses.
 - View transactions in a list or in Chart form for comparison.
-- Filter expenses by date
+- Filter Transaction according to its type, date.
 
 ### Task Manager
 
 - Perform CRUD operations on Tasks.
-- Filter Tasks according to requirement 
+- Filter Tasks according to requirement. 
 
 ## Folder Structure
 
