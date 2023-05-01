@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="style.css"
     </head>
    <script src=" https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <body>
+
+
+    <body class="er">
 <section class="container">
+  <div>
         <h1 align="center">TODO APP</h1>
             <!-- form to create task -->
         <form action="/create-task" method="POST">
@@ -48,6 +51,7 @@
                 </tbody>
             
             </table>
+        
           </div>         
   </form>
     </section>
@@ -71,7 +75,7 @@
                             
 
 <tr>
-                              <div >
+                              <div>
                                <td> <input type="checkbox" name="<%= i._id %>" ></td>
                                <td> <p id="task-description"><%= i.description %></td>
                                 <td><p id="task-category"></p>: <%= i.category %></td>
@@ -86,13 +90,14 @@
 
                            
 </table>
-</section>
+
 <div  align = "center"><input type="submit" class="
   n1" value="DELETE TASK">
-                </div>></form>
+</div>></form>
 
         
             </div>
+          </section>
     </body>
     
 </html>
